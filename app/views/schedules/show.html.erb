@@ -2,7 +2,7 @@
 
 <p>
   <strong>Plan:</strong>
-  <%= @schedule.plan %>
+  <%= simple_format(h @schedule.plan) %>
 </p>
 
 <p>
@@ -12,7 +12,9 @@
 
 <p>
   <strong>Image:</strong>
-  <%= @schedule.image %>
+</p>
+<p>
+  <img src="<%= @schedule.image %>" width="200">
 </p>
 
 <%= link_to 'Edit', edit_schedule_path(@schedule) %> |

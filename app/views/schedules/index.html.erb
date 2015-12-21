@@ -5,103 +5,38 @@
 <table>
   <thead>
     <tr>
-      <th>Plan</th>
-      <th>Date</th>
-      <th>Image</th>
+      <th width = "35">Date</th>
+      <th width = "200">Plan</th>
+      <th width = "300">Image</th>
       <th colspan="3"></th>
     </tr>
   </thead>
 
-  <tbody>
-    <% @schedules.each do |schedule| %>
-      <tr>
-        <td><%= schedule.plan %></td>
-        <td><%= schedule.date %></td>
-        <td><img src="<%= schedule.image %>"</td>
-        <td><%= link_to 'Show', schedule %></td>
-        <td><%= link_to 'Edit', edit_schedule_path(schedule) %></td>
-        <td><%= link_to 'Destroy', schedule, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
+  <tbody>  
+      <% 
+        x = 0..15
+        x.each do |y|
+          today=Time.now + y.days%>
+
+          <tr>
+            <td height="100" align="center"><%= today.day %>日</td>
+            <%@schedules.each do |schedule| %>
+
+              <%if today.year == schedule.date.year && today.month == schedule.date.month && today.day == schedule.date.day%>
+                <td align="center"><%= simple_format(h schedule.plan) %></td>
+                <td align="center"><img src="<%= schedule.image %>" height="100"></td>
+                <td><%= link_to 'Show', schedule %></td>
+                <td><%= link_to 'Edit', edit_schedule_path(schedule) %></td>
+                <td><%= link_to 'Destroy', schedule, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+              <% end %>
+            <% end %>
+          </tr>
+        <% end %>
+
+
   </tbody>
+
 </table>
 
 <br>
-
 <%= link_to 'New Schedule', new_schedule_path %>
-
-
-
-<%=@today = Time.now %>
-
-<%=print "Content-type: text/html; charset=Shift_JIS\n\n"%>
-<%=print <<END%>
-
-    <html>
-    <head>
-   <!--  <title><%=@today.year%>年カレンダー</title> -->
-    </head>
-    <body>
-    <table align="center" cellpadding="5">
-    <caption style="font-size:large"><%= @today.year%>年</caption>
-END
-<%= @days = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31] %>           # 月の日数（うるう年の2月は+1）
-<%= @days[1] += 1 if @today.year % 4 == 0 and @today.year % 100 != 0 or @today.year % 400 == 0 %>
-for @m in 1..12                                # カレンダー表示（１月～12月）
-    <%= @startday  = Time.local(@today.year, @m, 1) %>              # 1日
-    <%=@endday = @days[@m.to_i - 1] %>                       # 最後の日
-    print "<tr>\n" if @m % 3 == 1
-    print <<"    END"
-        <td valign="top">
-        <table border="2" bordercolor="#ff9900" cellspacing="0" cellpadding="5">
-        <tr>
-            <th colspan="7"><%=@m%><span style="font-size:xx-small">月</span></th>
-        </tr>
-        <tr>
-            <td align="center" style="font-size:xx-small;color:red">日</td>
-            <td align="center" style="font-size:xx-small">月</td>
-            <td align="center" style="font-size:xx-small">火</td>
-            <td align="center" style="font-size:xx-small">水</td>
-            <td align="center" style="font-size:xx-small">木</td>
-            <td align="center" style="font-size:xx-small">金</td>
-            <td align="center" style="font-size:xx-small;color:blue">土</font></td>
-        </tr>
-    END
-    count = 0
-    i = 0
-    while i < startday.wday                        # １日までの空欄
-        print "<tr>" if count % 7 == 0
-        print "<td>　</td>"
-        count += 1
-        i += 1
-    end
-    i = 1
-    while i <= endday                        # 日付を書き込む
-        print "<tr>" if count % 7 == 0
-        print "<td align=\"right\""
-        print " style=\"color:red\"" if count % 7 == 0
-        print " style=\"color:blue\"" if count % 7 == 6
-        print ">"
-        print i
-        print "</td>"
-        count += 1
-        print "</tr>\n" if count % 7 == 0
-        i += 1
-    end
-    while count % 7 != 0                        # 最後の日からの空欄
-        print "<td>　</td>"
-        count += 1
-        print "</tr>\n" if count % 7 == 0
-    end
-    print <<"    END"
-        </table>
-        </td>
-    END
-    print "</tr>\n" if m % 3 == 0
-end
-print <<END
-    </table>
-    </body>
-    </html>
-END
-
