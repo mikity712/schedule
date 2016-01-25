@@ -2,32 +2,38 @@
 
 <h1>Listing Schedules</h1>
 
-<table>
+<table border = "1" cellspacing="0">
   <thead>
     <tr>
-      <th width = "35">Date</th>
+      <th width = "40">Date</th>
+      <th width = "50">WDay</th>
       <th width = "200">Plan</th>
       <th width = "300">Image</th>
-      <th colspan="3"></th>
+      <th colspan="4"></th>
     </tr>
   </thead>
 
   <tbody>  
       <% 
-        x = 0..15
+        x = 0..6
         x.each do |y|
           today=Time.now + y.days%>
 
           <tr>
             <td height="100" align="center"><%= today.day %>日</td>
+
+            <%arr = ["日","月","火","水","木","金","土"]%>
+            <td height="100" align="center"><%=arr[today.wday]%>曜日</td>
+
             <%@schedules.each do |schedule| %>
 
               <%if today.year == schedule.date.year && today.month == schedule.date.month && today.day == schedule.date.day%>
-                <td align="center"><%= simple_format(h schedule.plan) %></td>
+                <td width = "50"><%= simple_format(h schedule.plan) %></td>
+              
                 <td align="center"><img src="<%= schedule.image %>" height="100"></td>
-                <td><%= link_to 'Show', schedule %></td>
-                <td><%= link_to 'Edit', edit_schedule_path(schedule) %></td>
-                <td><%= link_to 'Destroy', schedule, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+                <td><%= link_to 'Show', schedule %>
+                <%= link_to 'Edit', edit_schedule_path(schedule) %>
+                <%= link_to 'Destroy', schedule, method: :delete, data: { confirm: 'Are you sure?' } %></td>
               <% end %>
             <% end %>
           </tr>
