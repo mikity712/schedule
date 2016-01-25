@@ -7,7 +7,7 @@
     <tr>
       <th width = "40">Date</th>
       <th width = "50">WDay</th>
-      <th width = "200">Plan</th>
+      <th width = "200" border = "1" cellspacing="0">Plan</th>
       <th width = "300">Image</th>
       <th colspan="4"></th>
     </tr>
@@ -17,24 +17,31 @@
       <% 
         x = 0..6
         x.each do |y|
-          today=Time.now + y.days%>
+          
+          today=Date.today.beginning_of_week(:sunday) + y.days%>
 
           <tr>
             <td height="100" align="center"><%= today.day %>日</td>
 
             <%arr = ["日","月","火","水","木","金","土"]%>
-            <td height="100" align="center"><%=arr[today.wday]%>曜日</td>
+            <td height="100" align="center" border = "1" cellspacing="0"><%=arr[today.wday]%>曜日</td>
 
             <%@schedules.each do |schedule| %>
-
+             
               <%if today.year == schedule.date.year && today.month == schedule.date.month && today.day == schedule.date.day%>
-                <td width = "50"><%= simple_format(h schedule.plan) %></td>
-              
+                <%if schedule.plan.empty?%>
+                  <td width = "50"><%= "予定なし" %></td>
+                <%else%>
+                  <td width = "50"><%= simple_format(h schedule.plan) %></td>
+                <%end%>
                 <td align="center"><img src="<%= schedule.image %>" height="100"></td>
                 <td><%= link_to 'Show', schedule %>
                 <%= link_to 'Edit', edit_schedule_path(schedule) %>
                 <%= link_to 'Destroy', schedule, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-              <% end %>
+
+             
+              <%end%>
+
             <% end %>
           </tr>
         <% end %>
