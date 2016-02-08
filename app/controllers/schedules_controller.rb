@@ -5,11 +5,17 @@ class SchedulesController < ApplicationController
   # GET /schedules.json
   def index
     @schedules = Schedule.order("date")
+    @month = params[:month]
+
   end
 
   # GET /schedules/1
   # GET /schedules/1.json
   def show
+    p params[:years]
+    p params[:month]
+    p params[:day]
+    p params[:id]
   end
 
   # GET /schedules/new
