@@ -4,7 +4,7 @@ class SchedulesController < ApplicationController
   # GET /schedules
   # GET /schedules.json
   def index
-    @schedules = Schedule.order("date").where(date: (Time.now)..Time.now+7.days)
+    @schedules = Schedule.order("date")
   end
 
   # GET /schedules/1
