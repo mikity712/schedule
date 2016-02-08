@@ -5,6 +5,7 @@ class SchedulesController < ApplicationController
   # GET /schedules.json
   def index
     @schedules = Schedule.order("date")
+    @year = params[:year]
     @month = params[:month]
 
   end

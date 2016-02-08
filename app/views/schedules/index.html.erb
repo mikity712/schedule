@@ -1,8 +1,28 @@
 <p id="notice"><%= notice %></p>
 
-<h1>Listing Schedules</h1>
-<h2><%=Date.today.month%>月</h2>
-<h3><%=@month%></h3>
+<h1>Listing Schedules&#9825;</h1>
+
+<%if @year.nil?%>
+  <%@year = Date.today.year%>
+  <%@month = Date.today.month%>
+<% end %>
+<% special =  Time.zone.local(@year,@month)%>
+
+
+<h3><%=special.year%>年<%=special.month%>月</h3>
+
+<h2>&nbsp;&#9756;&nbsp;<%= link_to"#{special.prev_month.month}月", schedules_path(year: special.prev_month.year,month: special.prev_month.month)%>
+&lt;&nbsp;<%="#{special.month}月"%>
+&gt;&nbsp;<%= link_to"#{special.next_month.month}月", schedules_path(year: special.next_month.year,month: special.next_month.month)%>
+&#9758;
+
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#10032;
+<%= link_to"今月", schedules_path(year: Date.today.year,month: Date.today.month)%>
+&#10032;
+
+</h2>
+
 
 <table border = "1" cellspacing="0">
   <thead>
@@ -17,11 +37,11 @@
 
   <tbody>  
       <% 
-      endday =Date.today.end_of_month
+      endday =special.end_of_month
         x = 0...endday.day
         x.each do |y|
           
-          today=Date.today.beginning_of_month + y.days%>
+          today=special.beginning_of_month + y.days%>
 
           <tr>
             <td height="100" align="center"><%= today.day %>日</td>
